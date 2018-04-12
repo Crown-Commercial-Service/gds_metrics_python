@@ -1,7 +1,10 @@
-from time import monotonic
 import os
+from time import monotonic
 from flask import g, request, Response
 from flask.signals import got_request_exception, request_finished
+
+# set multiprocess temp directory before we import prometheus_client
+os.environ.setdefault('prometheus_multiproc_dir', '/tmp') # noqa
 
 import prometheus_client
 from prometheus_client import Counter, Histogram
@@ -12,9 +15,6 @@ class GDSMetrics(object):
 
     def __init__(self):
         self.metrics_path = os.environ.get('PROMETHEUS_METRICS_PATH', '/metrics')
-
-        # set multiprocess temp directory
-        os.environ.setdefault('prometheus_multiproc_dir', '/tmp')
 
         self.registry = CollectorRegistry()
         multiprocess.MultiProcessCollector(self.registry)
