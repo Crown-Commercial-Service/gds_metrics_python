@@ -49,7 +49,10 @@ class GDSMetrics(object):
     def metrics_endpoint(self):
         return Response(
             prometheus_client.generate_latest(self.registry),
-            mimetype='text/plain; version=0.0.4; charset=utf-8'
+            mimetype='text/plain; version=0.0.4; charset=utf-8',
+            headers={
+                'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',
+            }
         )
 
     def before_request(self, *args, **kwargs):
