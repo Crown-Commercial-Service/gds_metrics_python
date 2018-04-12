@@ -1,7 +1,7 @@
 from time import monotonic
 import os
 from flask import g, request, Response
-from flask.signal import got_request_exception, request_finished
+from flask.signals import got_request_exception, request_finished
 
 import prometheus_client
 from prometheus_client import Counter, Histogram
