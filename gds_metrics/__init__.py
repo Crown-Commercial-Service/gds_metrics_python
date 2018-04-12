@@ -23,20 +23,17 @@ class GDSMetrics(object):
             'http_server_requests_total',
             'Total requests',
             ['method', 'host', 'path', 'code'],
-            registry=self.registry,
         )
 
         self.HTTP_SERVER_EXCEPTIONS_TOTAL = Counter(
             'http_server_exceptions_total',
             'Total number of exceptions',
             ['error'],
-            registry=self.registry,
         )
 
         self.HTTP_SERVER_REQUEST_DURATION_SECONDS = Histogram(
             'http_server_request_duration_seconds', 'Server request duration in seconds',
             ['method', 'host', 'path', 'code'],
-            registry=self.registry,
         )
 
     def init_app(self, app):
