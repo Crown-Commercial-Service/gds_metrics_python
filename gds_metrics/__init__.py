@@ -1,3 +1,4 @@
+import gzip
 import hmac
 import json
 import os
@@ -43,13 +44,25 @@ class GDSMetrics(object):
             elif not hmac.compare_digest(auth_header, 'Bearer {}'.format(self.auth_token)):
                 abort(403)
 
-        return Response(
+        response = Response(
             prometheus_client.generate_latest(self.registry),
             mimetype='text/plain; version=0.0.4; charset=utf-8',
             headers={
                 'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',
             }
         )
+
+        accept_encoding = request.headers.get('Accept-Encoding', '')
+
+        if 'gzip' not in accept_encoding.lower():
+            return response
+
+        response.data = gzip.compress(response.data)
+        response.headers['Content-Encoding'] = 'gzip'
+        response.headers['Content-Length'] = len(response.data)
+        response.headers['Vary'] = 'Accept-Encoding'
+
+        return response
 
     def before_request(self, *args, **kwargs):
         g._gds_metrics_start_time = monotonic()
