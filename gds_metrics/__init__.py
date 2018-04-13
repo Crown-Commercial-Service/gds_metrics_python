@@ -7,8 +7,13 @@ from flask.signals import got_request_exception, request_finished
 os.environ.setdefault('prometheus_multiproc_dir', '/tmp') # noqa
 
 import prometheus_client
-from prometheus_client import Counter, Histogram
 from prometheus_client import multiprocess, CollectorRegistry
+
+from .metrics import (
+    HTTP_SERVER_EXCEPTIONS_TOTAL,
+    HTTP_SERVER_REQUEST_DURATION_SECONDS,
+    HTTP_SERVER_REQUESTS_TOTAL,
+)
 
 
 class GDSMetrics(object):
@@ -18,23 +23,6 @@ class GDSMetrics(object):
 
         self.registry = CollectorRegistry()
         multiprocess.MultiProcessCollector(self.registry)
-
-        self.HTTP_SERVER_REQUESTS_TOTAL = Counter(
-            'http_server_requests_total',
-            'Total requests',
-            ['method', 'host', 'path', 'code'],
-        )
-
-        self.HTTP_SERVER_EXCEPTIONS_TOTAL = Counter(
-            'http_server_exceptions_total',
-            'Total number of exceptions',
-            ['error'],
-        )
-
-        self.HTTP_SERVER_REQUEST_DURATION_SECONDS = Histogram(
-            'http_server_request_duration_seconds', 'Server request duration in seconds',
-            ['method', 'host', 'path', 'code'],
-        )
 
     def init_app(self, app):
         app.add_url_rule(self.metrics_path, 'metrics', self.metrics_endpoint)
@@ -57,14 +45,14 @@ class GDSMetrics(object):
 
     def teardown_request(self, sender, response, *args, **kwargs):
         resp_time = monotonic() - g._gds_metrics_start_time
-        self.HTTP_SERVER_REQUEST_DURATION_SECONDS.labels(
+        HTTP_SERVER_REQUEST_DURATION_SECONDS.labels(
             request.method,
             request.host,
             request.url_rule.rule if request.url_rule else None,
             response.status_code
         ).observe(resp_time)
 
-        self.HTTP_SERVER_REQUESTS_TOTAL.labels(
+        HTTP_SERVER_REQUESTS_TOTAL.labels(
             request.method,
             request.host,
             request.url_rule.rule if request.url_rule else None,
@@ -73,5 +61,5 @@ class GDSMetrics(object):
 
         return response
 
-    def handle_exception(self, sender, response, *args, **kwargs):
-        self.HTTP_SERVER_EXCEPTIONS_TOTAL.labels(kwargs.get('exc_info', [None])[0]).inc()
+    def handle_exception(self, sender, exception, *args, **kwargs):
+        HTTP_SERVER_EXCEPTIONS_TOTAL.labels(type(exception)).inc()
