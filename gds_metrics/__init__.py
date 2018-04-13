@@ -1,6 +1,9 @@
+import hmac
+import json
 import os
 from time import monotonic
-from flask import g, request, Response
+
+from flask import abort, g, request, Response
 from flask.signals import got_request_exception, request_finished
 
 # set multiprocess temp directory before we import prometheus_client
@@ -20,6 +23,7 @@ class GDSMetrics(object):
 
     def __init__(self):
         self.metrics_path = os.environ.get('PROMETHEUS_METRICS_PATH', '/metrics')
+        self.auth_token = json.loads(os.environ.get("VCAP_APPLICATION", "{}")).get("application_id")
 
         self.registry = CollectorRegistry()
         multiprocess.MultiProcessCollector(self.registry)
@@ -32,6 +36,13 @@ class GDSMetrics(object):
         got_request_exception.connect(self.handle_exception, sender=app)
 
     def metrics_endpoint(self):
+        if self.auth_token:
+            auth_header = request.headers.get('Authorization', '')
+            if not auth_header:
+                abort(401)
+            elif not hmac.compare_digest(auth_header, 'Bearer {}'.format(self.auth_token)):
+                abort(403)
+
         return Response(
             prometheus_client.generate_latest(self.registry),
             mimetype='text/plain; version=0.0.4; charset=utf-8',
