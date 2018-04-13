@@ -72,14 +72,14 @@ class GDSMetrics(object):
         HTTP_SERVER_REQUEST_DURATION_SECONDS.labels(
             request.method,
             request.host,
-            request.url_rule.rule if request.url_rule else None,
+            request.url_rule.rule if request.url_rule else 'No endpoint',
             response.status_code
         ).observe(resp_time)
 
         HTTP_SERVER_REQUESTS_TOTAL.labels(
             request.method,
             request.host,
-            request.url_rule.rule if request.url_rule else None,
+            request.url_rule.rule if request.url_rule else 'No endpoint',
             response.status_code
         ).inc()
 
