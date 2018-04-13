@@ -60,14 +60,14 @@ class GDSMetrics(object):
         self.HTTP_SERVER_REQUEST_DURATION_SECONDS.labels(
             request.method,
             request.host,
-            request.path,
+            request.url_rule.rule if request.url_rule else None,
             response.status_code
         ).observe(resp_time)
 
         self.HTTP_SERVER_REQUESTS_TOTAL.labels(
             request.method,
             request.host,
-            request.path,
+            request.url_rule.rule if request.url_rule else None,
             response.status_code
         ).inc()
 
