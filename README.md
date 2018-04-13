@@ -2,9 +2,13 @@
 
 GDS Metrics are in Alpha and these instructions are subject to change.
 
-GDS Python metrics enable your [Python][] web app to export performance data to [Prometheus][], you can add metrics to your app using this [Python package][].
+GDS Python metrics enables your [Python][] web app to export performance data to [Prometheus][], you can add metrics to your app using this [Python package][].
 
-This package is a thin wrapper around ... that:
+This package is a thin wrapper around [the Python Prometheus client][] that:
+
+* T
+* B
+* C
 
 Once you’ve added this package, metrics data is served from your app's metrics endpoint and is scraped by Prometheus. This data can be turned into performance dashboards using [Grafana][].
 
@@ -21,11 +25,11 @@ Before using GDS metrics you should have:
 
 To use GDS metrics you must:
 
-1. Add the [latest version of the package](...) to your requirements.txt, for example:
+1. Add the [latest version of the package][] to your requirements.txt, for example:
 
-    ```gem 'gds_metrics'```
+    ```TBC```
 
-2. Run the following command to install the gem:
+2. Run the following command to install the package:
 
     ```pip install -r requirements.tt```
 
@@ -47,14 +51,14 @@ The PaaS documentation has information on how you can [deploy a basic Python app
 
 ## Optional configuration
 
-You can change the path for serving metrics (by default `/metrics`) by setting the `PROMETHEUS_METRICS_PATH` environment variable.
+You can change the path for serving metrics (by default `/metrics`) by setting the `PROMETHEUS_METRICS_PATH` [environment variable][].
 
 ## How to setup extended metrics
 
 While common metrics are recorded by default, you can also:
 
 * record your own metrics such as how many users are signed up for your service, or how many emails it's sent
-* use the Prometheus interface to set your own metrics...
+* use the Prometheus interface to set your own metrics as the metrics Python package is built on top of [the Python Prometheus client][]
 
 You can read more about the different types of metrics available in the [Prometheus documentation][].
 
@@ -66,13 +70,19 @@ GDS Reliability Engineering welcome contributions. We'd appreciate it if you wri
 
 This project is licensed under the [MIT License][].
 
-
+[Python]: https://www.python.org/
 [Prometheus]: https://prometheus.io/
+[Python package]: TBC
+[the Python Prometheus client]: https://pypi.python.org/pypi/prometheus_client
 [Grafana]: https://grafana.com/
 [here]: https://reliability-engineering.cloudapps.digital/#reliability-engineering
+[Flask]: http://flask.pocoo.org/
 [GOV.UK Platform as a Service (PaaS)]: https://www.cloud.service.gov.uk/
-[the index page]: http://localhost:3000/
+[latest version of the package]: TBC
+[the index page]: http://localhost:5000/
 [PaaS]: https://www.cloud.service.gov.uk/
+[deploy a basic Python app]: TBC
+[deploying Python apps]: TBC
 [environment variable]: https://docs.cloud.service.gov.uk/#environment-variables
 [Prometheus documentation]: https://prometheus.io/docs/concepts/metric_types/
 [MIT License]: https://github.com/alphagov/gds_metrics_python/blob/master/LICENSE
