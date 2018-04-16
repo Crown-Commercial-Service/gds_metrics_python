@@ -1,4 +1,4 @@
-from prometheus_client import Counter, Histogram
+from prometheus_client import Counter, Gauge, Summary, Histogram # noqa
 
 
 HTTP_SERVER_REQUESTS_TOTAL = Counter(

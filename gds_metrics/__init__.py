@@ -13,7 +13,11 @@ os.environ.setdefault('prometheus_multiproc_dir', '/tmp') # noqa
 import prometheus_client
 from prometheus_client import multiprocess, CollectorRegistry
 
-from .metrics import (
+from .metrics import ( # noqa proxy metric types imports
+    Counter,
+    Gauge,
+    Summary,
+    Histogram,
     HTTP_SERVER_EXCEPTIONS_TOTAL,
     HTTP_SERVER_REQUEST_DURATION_SECONDS,
     HTTP_SERVER_REQUESTS_TOTAL,
