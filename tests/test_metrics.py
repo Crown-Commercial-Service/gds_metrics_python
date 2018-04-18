@@ -60,11 +60,12 @@ def test_calls_histogram_observe(client, mocker):
         headers=[(VALID_AUTH_HEADER)]
     )
     assert histogram_observe.called
-    # cannot define exact duration but expect at least the specified duration for the slow_request
-    assert histogram_observe.call_args_list[0][0][0] > SLOW_REQUEST_DURATION
+    # cannot define exact duration so expect at least the specified duration for the slow_request
+    assert histogram_observe.call_args_list[0][0][0] > SLOW_REQUEST_DURATION and \
+        histogram_observe.call_args_list[0][0][0] < SLOW_REQUEST_DURATION + 0.05
 
 
-def test_calls_counter_inc(client, mocker):
+def test_requests_increases_request_counter(client, mocker):
     counter_inc = mocker.patch(
         'gds_metrics.metrics.HTTP_SERVER_REQUESTS_TOTAL._wrappedClass.inc')
     client.get(
@@ -79,8 +80,8 @@ def test_exception_increases_exception_counter(client, mocker):
         'gds_metrics.metrics.HTTP_SERVER_EXCEPTIONS_TOTAL._wrappedClass.inc')
 
     response = client.get(
-        '/undefined-path',
+        '/exception',
         headers=[(VALID_AUTH_HEADER)]
     )
-    assert response.status_code == 404
+    assert response.status_code == 500
     assert counter_inc.called

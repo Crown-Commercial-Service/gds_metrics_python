@@ -26,5 +26,5 @@ fi
 flake8 .
 display_result $? 1 "Code style check"
 
-py.test --cov=gds_metrics --cov-report=term-missing tests/ --junitxml=test_results.xml -v
+py.test --cov=gds_metrics --cov-report=term-missing tests/ -v
 display_result $? 2 "Unit tests"

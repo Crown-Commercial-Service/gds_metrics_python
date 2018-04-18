@@ -27,5 +27,15 @@ setup(
         "prometheus_client==0.2.0",
         "Flask>=0.10",
         "blinker>=1.4",
-    ]
+    ],
+    test_suite="tests",
+    classifiers=[
+        "Intended Audience :: Developers",
+        "Intended Audience :: Information Technology",
+        "Intended Audience :: System Administrators",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Topic :: System :: Monitoring",
+        "License :: OSI Approved :: MIT License",
+    ],
 )

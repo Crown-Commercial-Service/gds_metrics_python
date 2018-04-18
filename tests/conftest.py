@@ -7,7 +7,7 @@ from gds_metrics import GDSMetrics
 
 
 FAKE_APP_ID = "123"
-SLOW_REQUEST_DURATION = 0.5
+SLOW_REQUEST_DURATION = 0.1
 
 
 @pytest.fixture
@@ -30,6 +30,10 @@ def app(mocker):
     def slow_request():
         time.sleep(SLOW_REQUEST_DURATION)
         return 'slow request'
+
+    @flask_app.route('/exception')
+    def exception():
+        raise Exception()
 
     yield flask_app
 
