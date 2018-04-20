@@ -1,8 +1,9 @@
-# GDS metrics for Python apps
+# GDS metrics for Python apps [![Build Status](https://travis-ci.org/alphagov/gds_metrics_python.svg?branch=master)](https://travis-ci.org/alphagov/gds_metrics_python)
+[![Coverage Status](https://coveralls.io/repos/github/alphagov/gds_metrics_python/badge.svg?branch=master)](https://coveralls.io/github/alphagov/gds_metrics_python?branch=master)
 
 GDS Metrics are in Alpha and these instructions are subject to change.
 
-GDS Python metrics enables your [Python][] web app to export performance data to [Prometheus][], you can add metrics to your app using this [GDS Python Package][].
+GDS Python metrics enables your [Python Flask][] web app to export performance data to [Prometheus][], you can add metrics to your app using this [GDS Python Package][].
 
 This package is a thin wrapper around [the Python Prometheus client][] that:
 
@@ -45,7 +46,7 @@ To use GDS metrics you must:
 
 When running on PaaS, citizens won’t see your metrics in production as this endpoint is automatically protected with authentication.
 
-The PaaS documentation has information on how you can [deploy a basic Python app][]. You can also read the official Cloud Foundry guide which has detailed information on [deploying Python apps][].
+You can also read the official Cloud Foundry guide which has detailed information on [deploying Python apps][].
 
 ## Optional configuration
 
