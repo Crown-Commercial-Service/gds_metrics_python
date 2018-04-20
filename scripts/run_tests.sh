@@ -23,8 +23,12 @@ function display_result {
 if [[ -z "$VIRTUAL_ENV" ]] && [[ -d venv ]]; then
   source ./venv/bin/activate
 fi
-flake8 .
+
+# install tox first
+pip install tox
+
+tox -e flake8
 display_result $? 1 "Code style check"
 
-py.test --cov=gds_metrics --cov-report=term-missing tests/ -v
+tox -e py35
 display_result $? 2 "Unit tests"

@@ -28,6 +28,11 @@ setup(
         "Flask>=0.10",
         "blinker>=1.4",
     ],
+    # for running pytest as `python setup.py test`, see
+    # http://doc.pytest.org/en/latest/goodpractices.html#integrating-with-setuptools-python-setup-py-test-pytest-runner
+    setup_requires=[
+        'pytest-runner'
+    ],
     test_suite="tests",
     classifiers=[
         "Intended Audience :: Developers",
@@ -38,4 +43,5 @@ setup(
         "Topic :: System :: Monitoring",
         "License :: OSI Approved :: MIT License",
     ],
+    keywords='gds reliability engineering metrics',
 )
