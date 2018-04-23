@@ -1,33 +1,16 @@
 .DEFAULT_GOAL := help
 SHELL := /bin/bash
 
-PIP_ACCEL_CACHE ?= ${CURDIR}/.cache/pip-accel
-
 .PHONY: help
 help:
 	@cat $(MAKEFILE_LIST) | grep -E '^[a-zA-Z_-]+:.*?## .*$$' | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-.PHONY: venv
-venv: venv/bin/activate ## Create virtualenv if it does not exist
-
-venv/bin/activate:
-	test -d venv || virtualenv venv -p python3
-	./venv/bin/pip install pip-accel
-
-.PHONY: dependencies
-dependencies: venv ## Install build dependencies
-	mkdir -p ${PIP_ACCEL_CACHE}
-	PIP_ACCEL_CACHE=${PIP_ACCEL_CACHE} ./venv/bin/pip-accel install --upgrade .
-
-.PHONY: build
-build: dependencies ## Build project
-
 .PHONY: test
-test: venv ## Run tests
+test: ## Run tests
 	./scripts/run_tests.sh
 
 .PHONY: build-wheel
-build-wheel: venv ## build distributable wheel
+build-wheel: ## build distributable wheel
 	./venv/bin/pip install wheel
 	./venv/bin/python setup.py bdist_wheel
 
