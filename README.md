@@ -8,7 +8,7 @@ GDS Python metrics enables your [Python Flask][] web app to export performance d
 This package is a thin wrapper around [the Python Prometheus client][] that:
 
 * protects your `/metrics` endpoint with basic HTTP authentication for apps deployed to GOV.UK PaaS
-* exposes standard metrics used in Grafana
+* exposes standard metrics to be used in Grafana
 ```http_server_request_duration_seconds_bucket, http_server_request_duration_seconds_count, http_server_request_duration_seconds_sum, http_server_exceptions_total```
 
 Once you’ve added this package, metrics data is served from your app's metrics endpoint and is scraped by Prometheus. This data can be turned into performance dashboards using [Grafana][].
@@ -19,10 +19,10 @@ You can read more about the Reliability Engineering monitoring solution [here][]
 
 Before using GDS metrics you should have:
 
-* created a [Python Flask][] app
+* created a [Python Flask][] app running on a [Gunicorn][] HTTP Server
 * deployed it to [GOV.UK Platform as a Service (PaaS)][]
 
-## How to install metrics for Flask apps
+## How to install metrics for Flask apps served on a Gunicorn server
 
 To use GDS metrics you must:
 
@@ -34,13 +34,19 @@ To use GDS metrics you must:
 
     `pip install -r requirements.txt`
 
-3. Restart your server by running:
+3. Add/Update your Gunicorn config to import `child_exit` from the library:
 
-    `flask run`
+    ```from gds_metrics.gunicorn import child_exit```
 
-4. Visit any page of your app (for example [the index page][]) to generate some site traffic
+    More information about [Prometheus Gunicorn setup][].
 
-5. Visit the metrics endpoint at `/metrics` to check if the package was set up correctly. If it's set up correctly, you will see a page containing some metrics (for example `http_server_request_duration_seconds_bucket`).
+4. Restart your server by running (config here is `gunicorn_config.py`, so should be updated to your config file):
+
+    `gunicorn -c gunicorn_config.py application:app`
+
+5. Visit any page of your app (for example [the index page][]) to generate some site traffic
+
+6. Visit the metrics endpoint at `/metrics` to check if the package was set up correctly. If it's set up correctly, you will see a page containing some metrics (for example `http_server_request_duration_seconds_bucket`).
 
 ## Running on GOV.UK Platform as a Service (PaaS)
 
@@ -74,6 +80,8 @@ This project is licensed under the [MIT License][].
 [the Python Prometheus client]: https://pypi.python.org/pypi/prometheus_client
 [Grafana]: https://grafana.com/
 [here]: https://reliability-engineering.cloudapps.digital/#reliability-engineering
+[Gunicorn]: http://gunicorn.org/
+[Prometheus Gunicorn setup]: https://github.com/prometheus/client_python#multiprocess-mode-gunicorn
 [Python Flask]: http://flask.pocoo.org/
 [GOV.UK Platform as a Service (PaaS)]: https://www.cloud.service.gov.uk/
 [latest version of the package]: https://pypi.org/project/gds-metrics/
