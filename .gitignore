@@ -1,3 +1,19 @@
+# Distribution / packaging
+.eggs
 __pycache__/
 *.py[cod]
 *.egg-info/
+build
+dist
+
+# Unit test / coverage reports
+.cache
+.coverage
+.tox/
+coverage.xml
+cache
+htmlcov/
+venv
+
+# secrets
+environment.sh

@@ -27,5 +27,21 @@ setup(
         "prometheus_client==0.2.0",
         "Flask>=0.10",
         "blinker>=1.4",
-    ]
+    ],
+    # for running pytest as `python setup.py test`, see
+    # http://doc.pytest.org/en/latest/goodpractices.html#integrating-with-setuptools-python-setup-py-test-pytest-runner
+    setup_requires=[
+        'pytest-runner'
+    ],
+    test_suite="tests",
+    classifiers=[
+        "Intended Audience :: Developers",
+        "Intended Audience :: Information Technology",
+        "Intended Audience :: System Administrators",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Topic :: System :: Monitoring",
+        "License :: OSI Approved :: MIT License",
+    ],
+    keywords='gds reliability engineering metrics',
 )

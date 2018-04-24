@@ -1,0 +1,11 @@
+language: python
+python:
+- '3.5'
+cache: pip
+install:
+- ./scripts/bootstrap.sh
+- pip install coveralls
+script:
+- ./scripts/run_tests.sh
+after_success:
+- coveralls
