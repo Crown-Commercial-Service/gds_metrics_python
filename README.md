@@ -28,25 +28,44 @@ To use GDS metrics you must:
 
 1. Add the [latest version of the package][] to your `requirements.txt`, for example:
 
-    `gds_metrics`
+    `gds-metrics==0.1.1`
 
 2. Run the following command to install the package:
 
     `pip install -r requirements.txt`
 
-3. Add/Update your Gunicorn config to import `child_exit` from the library:
+3. In your application file, usually `application.py`, create the GDSMetrics object and pass the Flask app object to the `init_app` function:
 
-    ```from gds_metrics.gunicorn import child_exit```
+    ```python
+    ...
+    from gds_metrics import GDSMetrics
+
+    app = Flask(__name__)
+
+    metrics = GDSMetrics()
+    metrics.init_app(app)
+    ...
+    ```
+
+4. Add/Update your Gunicorn config to import `child_exit` from the library:
+
+    ```python
+    from gds_metrics.gunicorn import child_exit
+    ```
 
     More information about [Prometheus Gunicorn setup][].
 
-4. Restart your server by running (config here is `gunicorn_config.py`, so should be updated to your config file):
+5. Restart your server by running:
+
+    `gunicorn -c <config file>.py <application file>:<app variable>`
+
+    For example -
 
     `gunicorn -c gunicorn_config.py application:app`
 
-5. Visit any page of your app (for example [the index page][]) to generate some site traffic
+6. Visit any page of your app (for example [the index page][]) to generate some site traffic
 
-6. Visit the metrics endpoint at `/metrics` to check if the package was set up correctly. If it's set up correctly, you will see a page containing some metrics (for example `http_server_request_duration_seconds_bucket`).
+7. Visit the metrics endpoint at `/metrics` to check if the package was set up correctly. If it's set up correctly, you will see a page containing some metrics (for example `http_server_request_duration_seconds_bucket`).
 
 ## Running on GOV.UK Platform as a Service (PaaS)
 
