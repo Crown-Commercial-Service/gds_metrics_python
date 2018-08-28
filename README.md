@@ -77,6 +77,8 @@ You can also read the official Cloud Foundry guide which has detailed informatio
 
 You can change the path for serving metrics (by default `/metrics`) by setting the `PROMETHEUS_METRICS_PATH` [environment variable][].
 
+If you are running `blue-green` deployments through a cf plugin like [autopilot][] you should disable basic auth on the `\metrics` endpoint and use [IP whitelisting][] by setting the `METRICS_BASIC_AUTH` [environment variable][] to `false`. This will minimise gaps in metrics during deployment.
+
 ## How to setup extended metrics
 
 While common metrics are recorded by default, you can also:
@@ -111,3 +113,4 @@ This project is licensed under the [MIT License][].
 [environment variable]: https://docs.cloud.service.gov.uk/#environment-variables
 [Prometheus documentation]: https://prometheus.io/docs/concepts/metric_types/
 [MIT License]: https://github.com/alphagov/gds_metrics_python/blob/master/LICENSE
+[IP whitelisting]: https://reliability-engineering.cloudapps.digital/manuals/monitor-paas-app-with-prometheus.html#ip-whitelist-your-app-metrics-endpoint

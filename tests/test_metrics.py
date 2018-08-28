@@ -17,6 +17,11 @@ def test_auth_header_returns_expected_response(client, auth_header, expected_sta
     assert response.status_code == expected_status
 
 
+def test_no_basic_auth_env_flag_returns_200(client_without_basic_auth):
+    response = client_without_basic_auth.get('/metrics')
+    assert response.status_code == 200
+
+
 def test_metrics_path_without_app_id_env_does_not_need_auth(client_without_env_app_id):
     response = client_without_env_app_id.get('/metrics')
     assert response.status_code == 200

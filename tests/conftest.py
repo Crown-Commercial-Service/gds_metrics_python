@@ -50,6 +50,23 @@ def client(app):
 
 
 @pytest.fixture(scope='function')
+def client_without_basic_auth(app, mocker):
+    with app.test_request_context(), app.test_client() as client:
+        mocker.patch.dict(
+            os.environ,
+            {
+                'VCAP_APPLICATION': '{"application_id": "' + FAKE_APP_ID + '"}',
+                'METRICS_BASIC_AUTH': 'false'
+            }
+        )
+
+        metrics = GDSMetrics()
+        metrics.init_app(app)
+
+        yield client
+
+
+@pytest.fixture(scope='function')
 def client_without_env_app_id(app, mocker):
     with app.test_request_context(), app.test_client() as client:
         mocker.patch.dict(os.environ, {'VCAP_APPLICATION': '{}'})
