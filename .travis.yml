@@ -1,11 +1,15 @@
 language: python
 python:
-- '3.5'
+- "3.5"
+- "3.6"
+- "3.7"
+- "3.8"
 cache: pip
 install:
-- ./scripts/bootstrap.sh
+- pip install -r requirements-test.txt
 - pip install coveralls
 script:
-- ./scripts/run_tests.sh
+- flake8
+- pytest
 after_success:
 - coveralls

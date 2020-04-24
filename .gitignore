@@ -1,3 +1,7 @@
+# local
+.vscode
+.devcontainer
+
 # Distribution / packaging
 .eggs
 __pycache__/

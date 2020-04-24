@@ -7,17 +7,18 @@ help:
 
 .PHONY: test
 test: ## Run tests
-	./scripts/run_tests.sh
+	flake8
+	python setup.py test
 
 .PHONY: build-wheel
 build-wheel: ## build distributable wheel
-	./venv/bin/pip install wheel
-	./venv/bin/python setup.py bdist_wheel
+	pip install wheel
+	python setup.py bdist_wheel
 
 .PHONY: publish-to-pypi
 publish-to-pypi: build-wheel ## upload distributable wheel to pypi
-	./venv/bin/pip install --upgrade twine
-	@./venv/bin/twine upload dist/*.whl \
+	pip install --upgrade twine
+	@twine upload dist/*.whl \
 		--repository-url=https://upload.pypi.org/legacy/ \
 		--username="${PYPI_USERNAME}" \
 		--password="${PYPI_PASSWORD}" \
