@@ -26,4 +26,4 @@ if [ ! $VIRTUAL_ENV ]; then
 fi
 
 # Install Python development dependencies
-python setup.py develop
+pip install -e .
