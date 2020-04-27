@@ -1,0 +1,6 @@
+-e .
+
+pytest==5.4.1
+pytest-mock==3.1.0
+pytest-cov==2.8.1
+flake8==3.7.9
