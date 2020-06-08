@@ -92,7 +92,7 @@ You can read more about the different types of metrics available in the [Prometh
 
 ## Contributing
 
-GDS Reliability Engineering welcome contributions. We'd appreciate it if you write tests with your changes and document them where appropriate, this will help us review them quickly.
+We welcome contributions. We'd appreciate it if you write tests with your changes and document them where appropriate, this will help us review them quickly.
 
 ## Licence
 
