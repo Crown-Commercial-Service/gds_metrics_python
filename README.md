@@ -1,6 +1,8 @@
 # GDS metrics for Python apps [![Build Status](https://travis-ci.org/alphagov/gds_metrics_python.svg?branch=master)](https://travis-ci.org/alphagov/gds_metrics_python)
 [![Coverage Status](https://coveralls.io/repos/github/alphagov/gds_metrics_python/badge.svg?branch=master)](https://coveralls.io/github/alphagov/gds_metrics_python?branch=master)
 
+This project is currently maintained by the [Digital Marketplace team](https://github.com/orgs/alphagov/teams/digitalmarketplace).
+
 GDS Metrics are in Alpha and these instructions are subject to change.
 
 GDS Python metrics enables your [Python Flask][] web app to export performance data to [Prometheus][], you can add metrics to your app using this [GDS Python Package][].
