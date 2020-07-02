@@ -1,3 +1,6 @@
+## 0.2.1
+* Fixes a bug with uncaught AttributeErrors if the `before_request` function did not run before `teardown_request`
+
 ## 0.2.0
 * Makes basic auth optional
 
