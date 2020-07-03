@@ -49,6 +49,8 @@ To use GDS metrics you must:
     ...
     ```
 
+    You want to run `metrics.init_app` before any other `init_app` functions and as early in your request processing as possible to get the most accurate and reliable response timings.
+
 4. Add/Update your Gunicorn config to import `child_exit` from the library:
 
     ```python

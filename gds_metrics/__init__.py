@@ -75,13 +75,17 @@ class GDSMetrics(object):
         g._gds_metrics_start_time = monotonic()
 
     def teardown_request(self, sender, response, *args, **kwargs):
-        resp_time = monotonic() - g._gds_metrics_start_time
-        HTTP_SERVER_REQUEST_DURATION_SECONDS.labels(
-            request.method,
-            request.host,
-            request.url_rule.rule if request.url_rule else 'No endpoint',
-            response.status_code
-        ).observe(resp_time)
+        if hasattr(g, "_gds_metrics_start_time"):
+            # There is not a guarantee that `g._gds_metrics_start_time` will exist
+            # as our `before_request` function will not run if the flask app has
+            # another `before_request` that runs before ours and throws an exception
+            resp_time = monotonic() - g._gds_metrics_start_time
+            HTTP_SERVER_REQUEST_DURATION_SECONDS.labels(
+                request.method,
+                request.host,
+                request.url_rule.rule if request.url_rule else 'No endpoint',
+                response.status_code
+            ).observe(resp_time)
 
         HTTP_SERVER_REQUESTS_TOTAL.labels(
             request.method,
