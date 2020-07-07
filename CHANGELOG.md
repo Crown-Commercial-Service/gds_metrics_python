@@ -1,3 +1,6 @@
+## 0.2.2
+* You can now use versions of prometheus-client newer than v0.2.0 (thanks @leohemsted)
+
 ## 0.2.1
 * Fixes a bug with uncaught AttributeErrors if the `before_request` function did not run before `teardown_request`
 
