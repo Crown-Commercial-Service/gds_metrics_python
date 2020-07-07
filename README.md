@@ -30,7 +30,7 @@ To use GDS metrics you must:
 
 1. Add the [latest version of the package][] to your `requirements.txt`, for example:
 
-    `gds-metrics==0.2.2`
+    `gds-metrics==0.2.3`
 
 2. Run the following command to install the package:
 

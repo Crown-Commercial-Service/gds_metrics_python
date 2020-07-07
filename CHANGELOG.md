@@ -1,3 +1,9 @@
+## 0.2.3
+
+### Bug fixes
+
+* You can no longer use versions of prometheus-client newer than v0.4.0, as they do not currently work with this package
+
 ## 0.2.2
 * You can now use versions of prometheus-client newer than v0.2.0 (thanks @leohemsted)
 
