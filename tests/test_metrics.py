@@ -57,36 +57,38 @@ def test_gzip_request_header_does_not_affect_other_paths(app, client):
 
 
 def test_calls_histogram_observe(client, mocker):
-    histogram_observe = mocker.patch(
-        'gds_metrics.metrics.HTTP_SERVER_REQUEST_DURATION_SECONDS._wrappedClass.observe')
-
+    histogram_labels = mocker.patch('gds_metrics.HTTP_SERVER_REQUEST_DURATION_SECONDS.labels')
     client.get(
         '/slow_request',
         headers=[(VALID_AUTH_HEADER)]
     )
-    assert histogram_observe.called
+    assert histogram_labels.called
+    observe_mock = histogram_labels.return_value.observe
+    assert observe_mock.called
     # cannot define exact duration so expect at least the specified duration for the slow_request
-    assert histogram_observe.call_args_list[0][0][0] > SLOW_REQUEST_DURATION and \
-        histogram_observe.call_args_list[0][0][0] < SLOW_REQUEST_DURATION + 0.05
+    assert observe_mock.call_args_list[0][0][0] > SLOW_REQUEST_DURATION and \
+        observe_mock.call_args_list[0][0][0] < SLOW_REQUEST_DURATION + 0.05
 
 
 def test_requests_increases_request_counter(client, mocker):
-    counter_inc = mocker.patch(
-        'gds_metrics.metrics.HTTP_SERVER_REQUESTS_TOTAL._wrappedClass.inc')
+    counter_labels = mocker.patch(
+        'gds_metrics.HTTP_SERVER_REQUESTS_TOTAL.labels')
     client.get(
         '/',
         headers=[(VALID_AUTH_HEADER)]
     )
-    assert counter_inc.called
+    assert counter_labels.called
+    assert counter_labels.return_value.inc.called
 
 
 def test_exception_increases_exception_counter(client, mocker):
-    counter_inc = mocker.patch(
-        'gds_metrics.metrics.HTTP_SERVER_EXCEPTIONS_TOTAL._wrappedClass.inc')
+    counter_labels = mocker.patch(
+        'gds_metrics.HTTP_SERVER_EXCEPTIONS_TOTAL.labels')
 
     response = client.get(
         '/exception',
         headers=[(VALID_AUTH_HEADER)]
     )
     assert response.status_code == 500
-    assert counter_inc.called
+    assert counter_labels.called
+    assert counter_labels.return_value.inc.called
