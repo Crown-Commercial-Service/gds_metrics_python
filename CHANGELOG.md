@@ -1,3 +1,9 @@
+## 0.2.4
+
+### Bug fixes
+
+* You can now use versions of prometheus-client newer than v0.4.0.
+
 ## 0.2.3
 
 ### Bug fixes
