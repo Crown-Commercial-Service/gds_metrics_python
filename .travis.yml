@@ -4,9 +4,13 @@ python:
 - "3.6"
 - "3.7"
 - "3.8"
+env:
+- PROMETHEUS_CLIENT_VERSION="0.2.*"
+- PROMETHEUS_CLIENT_VERSION="0.4.*"
 cache: pip
 install:
 - pip install -r requirements-test.txt
+- pip install prometheus-client==$PROMETHEUS_CLIENT_VERSION
 - pip install coveralls
 script:
 - flake8
