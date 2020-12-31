@@ -1,5 +1,4 @@
-# GDS metrics for Python apps [![Build Status](https://travis-ci.org/alphagov/gds_metrics_python.svg?branch=master)](https://travis-ci.org/alphagov/gds_metrics_python)
-[![Coverage Status](https://coveralls.io/repos/github/alphagov/gds_metrics_python/badge.svg?branch=master)](https://coveralls.io/github/alphagov/gds_metrics_python?branch=master)
+# GDS metrics for Python apps
 
 This project is currently maintained by the [Digital Marketplace team](https://github.com/orgs/alphagov/teams/digitalmarketplace).
 
