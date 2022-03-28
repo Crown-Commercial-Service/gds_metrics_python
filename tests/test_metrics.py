@@ -1,7 +1,8 @@
 import pytest
-from tests.conftest import FAKE_APP_ID, SLOW_REQUEST_DURATION
+from tests.conftest import FAKE_APP_ID, FAKE_BASIC_AUTH_TOKEN, SLOW_REQUEST_DURATION
 
 VALID_AUTH_HEADER = 'Authorization', 'Bearer {}'.format(FAKE_APP_ID)
+VALID_AUTH_HEADER_TOKEN = 'Authorization', 'Bearer {}'.format(FAKE_BASIC_AUTH_TOKEN)
 
 
 @pytest.mark.parametrize('auth_header,expected_status', [
@@ -14,6 +15,17 @@ def test_auth_header_returns_expected_response(client, auth_header, expected_sta
         '/metrics',
         headers=auth_header
     )
+    assert response.status_code == expected_status
+
+
+@pytest.mark.parametrize('auth_header,expected_status', [
+    (None, 401),
+    ([VALID_AUTH_HEADER_TOKEN], 200),
+    ([VALID_AUTH_HEADER], 403),
+    ([('Authorization', 'Bearer invalid-token')], 403),
+])
+def test_auth_token_takes_precedence_over_application_id(client_with_auth_token, auth_header, expected_status):
+    response = client_with_auth_token.get('/metrics', headers=auth_header)
     assert response.status_code == expected_status
 
 
