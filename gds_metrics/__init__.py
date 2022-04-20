@@ -42,13 +42,35 @@ class GDSMetrics(object):
         request_finished.connect(self.teardown_request, sender=app)
         got_request_exception.connect(self.handle_exception, sender=app)
 
-    def metrics_endpoint(self):
+    def _authenticate_request(self, auth_header):
+        # if no authentication is required, all requests are authenticated
+        if not self.authenticate_requests:
+            return
+
+        # This maintains the existing functionality where if this is deployed
+        # on a non-PaaS environment the request should be allowed, even though
+        # the METRICS_BASIC_AUTH defaults to true
+        if not self.application_id:
+            return
+
+        # if authentication is requred but auth_header is missing we reject it
+        if not auth_header:
+            abort(401)
+
         if self.auth_token:
-            auth_header = request.headers.get('Authorization', '')
-            if not auth_header:
-                abort(401)
-            elif not hmac.compare_digest(auth_header, 'Bearer {}'.format(self.auth_token)):
-                abort(403)
+            match = hmac.compare_digest(auth_header, 'Bearer {}'.format(self.auth_token))
+            if match:
+                return
+
+        match = hmac.compare_digest(auth_header, 'Bearer {}'.format(self.application_id))
+        if match:
+            return
+
+        abort(403)
+
+    def metrics_endpoint(self):
+        auth_header = request.headers.get('Authorization', '')
+        self._authenticate_request(auth_header)
 
         response = Response(
             prometheus_client.generate_latest(self.registry),
