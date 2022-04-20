@@ -7,6 +7,7 @@ from gds_metrics import GDSMetrics
 
 
 FAKE_APP_ID = "123"
+FAKE_BASIC_AUTH_TOKEN = "abcd"
 SLOW_REQUEST_DURATION = 0.1
 
 
@@ -70,6 +71,24 @@ def client_without_basic_auth(app, mocker):
 def client_without_env_app_id(app, mocker):
     with app.test_request_context(), app.test_client() as client:
         mocker.patch.dict(os.environ, {'VCAP_APPLICATION': '{}'})
+
+        metrics = GDSMetrics()
+        metrics.init_app(app)
+
+        yield client
+
+
+@pytest.fixture(scope='function')
+def client_with_auth_token(app, mocker):
+    with app.test_request_context(), app.test_client() as client:
+        mocker.patch.dict(
+            os.environ,
+            {
+                'VCAP_APPLICATION': '{"application_id": "' + FAKE_APP_ID + '"}',
+                'METRICS_BASIC_AUTH': 'true',
+                'METRICS_BASIC_AUTH_TOKEN': FAKE_BASIC_AUTH_TOKEN,
+            }
+        )
 
         metrics = GDSMetrics()
         metrics.init_app(app)
