@@ -28,13 +28,9 @@ class GDSMetrics(object):
 
     def __init__(self):
         self.metrics_path = os.environ.get('PROMETHEUS_METRICS_PATH', '/metrics')
-        if os.environ.get("METRICS_BASIC_AUTH", "true") == "true":
-            if os.environ.get("METRICS_BASIC_AUTH_TOKEN"):
-                self.auth_token = os.environ["METRICS_BASIC_AUTH_TOKEN"]
-            else:
-                self.auth_token = json.loads(os.environ.get("VCAP_APPLICATION", "{}")).get("application_id")
-        else:
-            self.auth_token = False
+        self.auth_token = os.environ.get("METRICS_BASIC_AUTH_TOKEN")
+        self.application_id = json.loads(os.environ.get("VCAP_APPLICATION", "{}")).get("application_id")
+        self.authenticate_requests = os.environ.get("METRICS_BASIC_AUTH", "true") == "true"
 
         self.registry = CollectorRegistry()
         multiprocess.MultiProcessCollector(self.registry)
